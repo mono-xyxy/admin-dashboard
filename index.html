@@ -1,0 +1,1209 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mofi Admin - Internal Tools Platform</title>
+    <meta name="description"
+        content="The ultimate admin dashboard layout for internal tools, SaaS platforms, and enterprise solutions.">
+
+    <!-- Alerio Font -->
+    <link href="https://fonts.cdnfonts.com/css/alerio" rel="stylesheet">
+
+    <!-- Phosphor Icons -->
+    <script src="https://unpkg.com/@phosphor-icons/web@2.1.1"></script>
+
+    <style>
+        /* =============================================
+           DESIGN SYSTEM — Mofi Dark Theme
+        ============================================= */
+        :root {
+            --bg-body: #191b29;
+            /* Darkest Navy */
+            --bg-card: #23273e;
+            /* Card Background */
+            --bg-header: rgba(25, 27, 41, 0.85);
+            /* Glass Header */
+            --bg-card-hover: #2a2f4a;
+            --text-main: #ffffff;
+            --text-muted: #8b94a3;
+            --accent-blue: #3b82f6;
+            /* Primary Action */
+            --accent-blue-h: #2563eb;
+            --accent-green: #10b981;
+            /* Success / Analytics */
+            --accent-orange: #f97316;
+            /* Warning / Badges */
+            --accent-pink: #ec4899;
+            /* Chart Accents */
+            --border-color: rgba(255, 255, 255, 0.08);
+            --font-main: 'Alerio', sans-serif;
+            --radius-sm: 8px;
+            --radius-md: 16px;
+            --radius-lg: 24px;
+            --shadow-float: 0 16px 48px rgba(0, 0, 0, 0.4);
+            --glow: 0 0 30px rgba(59, 130, 246, 0.4);
+        }
+
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: var(--font-main);
+            background: var(--bg-body);
+            color: var(--text-main);
+            line-height: 1.6;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Ambient Glow Background */
+        body::before {
+            content: '';
+            position: absolute;
+            top: -200px;
+            left: -100px;
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, rgba(59, 130, 246, 0.15), transparent 70%);
+            border-radius: 50%;
+            z-index: -1;
+            animation: pulse-glow 8s infinite alternate;
+        }
+
+        body::after {
+            content: '';
+            position: absolute;
+            bottom: 20%;
+            right: -100px;
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle, rgba(236, 72, 153, 0.1), transparent 70%);
+            border-radius: 50%;
+            z-index: -1;
+            animation: pulse-glow 10s infinite alternate-reverse;
+        }
+
+        @keyframes pulse-glow {
+            0% {
+                transform: scale(1);
+                opacity: 0.8;
+            }
+
+            100% {
+                transform: scale(1.2);
+                opacity: 1;
+            }
+        }
+
+        /* Typography */
+        h1,
+        h2,
+        h3,
+        h4 {
+            font-weight: 700;
+            line-height: 1.2;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        /* =============================================
+           NAVIGATION
+        ============================================= */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 6vw;
+            background: var(--bg-header);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            z-index: 100;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 800;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            letter-spacing: 1px;
+        }
+
+        .logo i {
+            color: var(--accent-blue);
+            font-size: 1.8rem;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 32px;
+            list-style: none;
+        }
+
+        .nav-links a {
+            font-size: 0.95rem;
+            font-weight: 500;
+            color: var(--text-muted);
+            transition: color 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: var(--text-main);
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 12px 24px;
+            border-radius: var(--radius-sm);
+            font-family: inherit;
+            font-weight: 600;
+            font-size: 0.95rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: none;
+            gap: 8px;
+        }
+
+        .btn-primary {
+            background: var(--accent-blue);
+            color: #fff;
+            box-shadow: 0 4px 14px rgba(59, 130, 246, 0.3);
+        }
+
+        .btn-primary:hover {
+            background: var(--accent-blue-h);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(59, 130, 246, 0.4);
+        }
+
+        .btn-outline {
+            background: transparent;
+            color: var(--text-main);
+            border: 1px solid var(--border-color);
+        }
+
+        .btn-outline:hover {
+            border-color: var(--text-muted);
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        /* =============================================
+           HERO SECTION
+        ============================================= */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            padding: 120px 6vw 60px;
+            gap: 60px;
+        }
+
+        .hero-content {
+            flex: 1;
+            max-width: 600px;
+            animation: fadeUp 1s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+            opacity: 0;
+            transform: translateY(30px);
+        }
+
+        @keyframes fadeUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 14px;
+            background: rgba(59, 130, 246, 0.1);
+            border: 1px solid rgba(59, 130, 246, 0.3);
+            border-radius: 50px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: var(--accent-blue);
+            margin-bottom: 24px;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+
+        .hero h1 {
+            font-size: clamp(2.5rem, 4vw, 3.8rem);
+            margin-bottom: 20px;
+            letter-spacing: -1px;
+        }
+
+        .hero h1 span {
+            color: var(--accent-blue);
+            display: inline-block;
+            position: relative;
+        }
+
+        .hero p {
+            font-size: 1.1rem;
+            color: var(--text-muted);
+            margin-bottom: 40px;
+        }
+
+        .hero-btns {
+            display: flex;
+            gap: 16px;
+        }
+
+        /* Hero Image/Mockup */
+        .hero-visual {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            opacity: 0;
+            transform: translateX(30px);
+            animation: fadeInRight 1s 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
+        @keyframes fadeInRight {
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .mockup-container {
+            width: 100%;
+            max-width: 580px;
+            height: 400px;
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            box-shadow: var(--shadow-float);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            position: relative;
+            transform: perspective(1000px) rotateY(-5deg) rotateX(10deg);
+            transition: transform 0.5s ease;
+        }
+
+        .mockup-container:hover {
+            transform: perspective(1000px) rotateY(0deg) rotateX(0deg) translateY(-10px);
+        }
+
+        .mock-header {
+            height: 40px;
+            background: rgba(0, 0, 0, 0.2);
+            display: flex;
+            align-items: center;
+            padding: 0 16px;
+            gap: 8px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .mock-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: #4a5568;
+        }
+
+        .mock-dot.red {
+            background: #ef4444;
+        }
+
+        .mock-dot.yellow {
+            background: #f59e0b;
+        }
+
+        .mock-dot.green {
+            background: #10b981;
+        }
+
+        .mock-body {
+            display: flex;
+            flex: 1;
+            overflow: hidden;
+        }
+
+        .mock-sidebar {
+            width: 60px;
+            background: rgba(0, 0, 0, 0.1);
+            border-right: 1px solid var(--border-color);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding-top: 20px;
+            gap: 20px;
+        }
+
+        .mock-sidebar-icon {
+            width: 24px;
+            height: 24px;
+            background: var(--border-color);
+            border-radius: 6px;
+        }
+
+        .mock-sidebar-icon.active {
+            background: var(--accent-blue);
+            box-shadow: 0 0 10px var(--accent-blue);
+        }
+
+        .mock-content {
+            flex: 1;
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .mock-cards {
+            display: flex;
+            gap: 16px;
+        }
+
+        .mock-card {
+            flex: 1;
+            height: 80px;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 12px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .mock-card .mc-title {
+            width: 40px;
+            height: 8px;
+            background: var(--text-muted);
+            border-radius: 4px;
+        }
+
+        .mock-card .mc-val {
+            width: 60px;
+            height: 16px;
+            background: #fff;
+            border-radius: 4px;
+        }
+
+        .mock-chart {
+            flex: 1;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            align-items: flex-end;
+            padding: 0 20px 20px;
+            gap: 12px;
+        }
+
+        .mock-bar {
+            flex: 1;
+            background: var(--accent-blue);
+            border-radius: 4px 4px 0 0;
+            opacity: 0.8;
+            animation: growBar 2s ease-out infinite alternate;
+        }
+
+        .mock-bar:nth-child(1) {
+            height: 40%;
+            animation-delay: 0.1s;
+            background: var(--accent-pink);
+        }
+
+        .mock-bar:nth-child(2) {
+            height: 60%;
+            animation-delay: 0.2s;
+        }
+
+        .mock-bar:nth-child(3) {
+            height: 30%;
+            animation-delay: 0.3s;
+            background: var(--accent-orange);
+        }
+
+        .mock-bar:nth-child(4) {
+            height: 80%;
+            animation-delay: 0.4s;
+        }
+
+        .mock-bar:nth-child(5) {
+            height: 50%;
+            animation-delay: 0.5s;
+            background: var(--accent-green);
+        }
+
+        @keyframes growBar {
+            from {
+                transform: scaleY(0.8);
+                transform-origin: bottom;
+            }
+
+            to {
+                transform: scaleY(1.1);
+                transform-origin: bottom;
+            }
+        }
+
+
+        /* =============================================
+           SECTION COMMON
+        ============================================= */
+        section {
+            padding: 100px 6vw;
+        }
+
+        .section-header {
+            text-align: center;
+            max-width: 600px;
+            margin: 0 auto 60px;
+        }
+
+        .section-title {
+            font-size: 2.4rem;
+            margin-bottom: 16px;
+        }
+
+        .section-subtitle {
+            color: var(--text-muted);
+            font-size: 1.05rem;
+        }
+
+
+        /* =============================================
+           FEATURES (Key Features / Solutions)
+        ============================================= */
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+
+        .feature-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            padding: 40px 30px;
+            border-radius: var(--radius-md);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-8px);
+            border-color: rgba(59, 130, 246, 0.4);
+            background: var(--bg-card-hover);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .feature-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: transparent;
+            transition: background 0.3s;
+        }
+
+        .feature-card.f-blue:hover::before {
+            background: var(--accent-blue);
+        }
+
+        .feature-card.f-green:hover::before {
+            background: var(--accent-green);
+        }
+
+        .feature-card.f-orange:hover::before {
+            background: var(--accent-orange);
+        }
+
+        .f-icon {
+            width: 56px;
+            height: 56px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8rem;
+            margin-bottom: 24px;
+        }
+
+        .f-blue .f-icon {
+            background: rgba(59, 130, 246, 0.1);
+            color: var(--accent-blue);
+        }
+
+        .f-green .f-icon {
+            background: rgba(16, 185, 129, 0.1);
+            color: var(--accent-green);
+        }
+
+        .f-orange .f-icon {
+            background: rgba(249, 115, 22, 0.1);
+            color: var(--accent-orange);
+        }
+
+        .feature-card h3 {
+            font-size: 1.3rem;
+            margin-bottom: 12px;
+        }
+
+        .feature-card p {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+        }
+
+        /* =============================================
+           HOW IT WORKS
+        ============================================= */
+        #how-it-works {
+            background: rgba(0, 0, 0, 0.15);
+            border-top: 1px solid var(--border-color);
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .steps-wrapper {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 40px;
+            position: relative;
+        }
+
+        /* Connecting Line */
+        .steps-wrapper::before {
+            content: '';
+            position: absolute;
+            top: 35px;
+            left: 10%;
+            width: 80%;
+            height: 2px;
+            background: linear-gradient(90deg, var(--accent-blue), var(--accent-pink));
+            z-index: 0;
+            opacity: 0.3;
+        }
+
+        .step-col {
+            position: relative;
+            z-index: 1;
+            text-align: center;
+        }
+
+        .step-number {
+            width: 70px;
+            height: 70px;
+            background: var(--bg-card);
+            border: 2px solid var(--border-color);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: #fff;
+            margin: 0 auto 24px;
+            transition: all 0.3s;
+        }
+
+        .step-col:hover .step-number {
+            border-color: var(--accent-blue);
+            background: var(--accent-blue);
+            box-shadow: 0 0 20px rgba(59, 130, 246, 0.5);
+            transform: scale(1.1);
+        }
+
+        .step-col h3 {
+            font-size: 1.2rem;
+            margin-bottom: 12px;
+        }
+
+        .step-col p {
+            font-size: 0.95rem;
+            color: var(--text-muted);
+        }
+
+        /* =============================================
+           SOCIAL PROOF / DASHBOARD WIDGET
+        ============================================= */
+        .proof-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+            align-items: center;
+        }
+
+        .testimonials {
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
+
+        .tweet-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            padding: 30px;
+            border-radius: var(--radius-md);
+            position: relative;
+        }
+
+        .tweet-card i {
+            position: absolute;
+            top: 30px;
+            right: 30px;
+            color: rgba(255, 255, 255, 0.1);
+            font-size: 2rem;
+        }
+
+        .tweet-text {
+            font-size: 1.05rem;
+            margin-bottom: 20px;
+            font-style: italic;
+        }
+
+        .tweet-author {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .tweet-avatar {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: var(--accent-blue);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+
+        .a-pink {
+            background: var(--accent-pink);
+        }
+
+        .author-info h4 {
+            font-size: 1rem;
+        }
+
+        .author-info span {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+
+        /* Interactive Widget */
+        .interactive-widget {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            padding: 30px;
+            box-shadow: var(--shadow-float);
+        }
+
+        .widget-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+
+        .widget-header h3 {
+            font-size: 1.2rem;
+        }
+
+        .chart-svg-wrapper {
+            position: relative;
+            height: 200px;
+            width: 100%;
+        }
+
+        .svg-chart path {
+            animation: dash 3s linear forwards;
+        }
+
+        @keyframes dash {
+            from {
+                stroke-dasharray: 1000;
+                stroke-dashoffset: 1000;
+            }
+
+            to {
+                stroke-dasharray: 1000;
+                stroke-dashoffset: 0;
+            }
+        }
+
+        .chart-grid {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            z-index: 0;
+            opacity: 0.1;
+        }
+
+        .chart-grid div {
+            height: 1px;
+            background: #fff;
+            width: 100%;
+        }
+
+        /* =============================================
+           COMMUNITY (CTA)
+        ============================================= */
+        #community {
+            text-align: center;
+            background: linear-gradient(180deg, transparent, rgba(59, 130, 246, 0.05));
+        }
+
+        .cta-box {
+            max-width: 700px;
+            margin: 0 auto;
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            padding: 60px 40px;
+            border-radius: var(--radius-lg);
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+        }
+
+        .cta-box::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(59, 130, 246, 0.1) 0%, transparent 60%);
+            animation: rotateBg 15s linear infinite;
+            z-index: 0;
+        }
+
+        @keyframes rotateBg {
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        .cta-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        .cta-content h2 {
+            font-size: 2.2rem;
+            margin-bottom: 20px;
+        }
+
+        .cta-content p {
+            color: var(--text-muted);
+            margin-bottom: 40px;
+            font-size: 1.05rem;
+        }
+
+        .signup-form {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            max-width: 400px;
+            margin: 0 auto;
+        }
+
+        .signup-form input {
+            width: 100%;
+            padding: 16px 20px;
+            background: rgba(0, 0, 0, 0.2);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-sm);
+            color: #fff;
+            font-family: inherit;
+            font-size: 1rem;
+            outline: none;
+            transition: border-color 0.3s;
+        }
+
+        .signup-form input:focus {
+            border-color: var(--accent-blue);
+        }
+
+        .signup-form .btn-primary {
+            width: 100%;
+            padding: 16px;
+            font-size: 1.05rem;
+        }
+
+        /* =============================================
+           FOOTER
+        ============================================= */
+        footer {
+            border-top: 1px solid var(--border-color);
+            padding: 60px 6vw 30px;
+            background: rgba(0, 0, 0, 0.2);
+        }
+
+        .footer-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+
+        .footer-links {
+            display: flex;
+            gap: 30px;
+        }
+
+        .footer-links a {
+            color: var(--text-muted);
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        .footer-links a:hover {
+            color: var(--accent-blue);
+        }
+
+        .footer-social {
+            display: flex;
+            gap: 16px;
+        }
+
+        .footer-social a {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-muted);
+            font-size: 1.2rem;
+            transition: all 0.3s;
+        }
+
+        .footer-social a:hover {
+            background: var(--accent-blue);
+            color: #fff;
+            border-color: var(--accent-blue);
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding-top: 30px;
+            border-top: 1px solid var(--border-color);
+            color: rgba(255, 255, 255, 0.3);
+            font-size: 0.9rem;
+        }
+
+        /* Responsive */
+        @media(max-width: 900px) {
+
+            .hero,
+            .proof-container {
+                flex-direction: column;
+            }
+
+            .steps-wrapper {
+                grid-template-columns: 1fr;
+                gap: 60px;
+            }
+
+            .steps-wrapper::before {
+                display: none;
+            }
+
+            .nav-links {
+                display: none;
+            }
+
+            /* Mobile menu needed in prod */
+            .hero {
+                padding-top: 140px;
+                text-align: center;
+            }
+
+            .hero-btns {
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- NAVIGATION -->
+    <nav>
+        <div class="logo">
+            <i class="ph-fill ph-circles-four"></i> Mofi.
+        </div>
+        <ul class="nav-links">
+            <li><a href="#home">Home</a></li>
+            <li><a href="#features">Features</a></li>
+            <li><a href="#how-it-works">How It Works</a></li>
+            <li><a href="#social-proof">Testimonials</a></li>
+        </ul>
+        <a href="#community" class="btn btn-primary">Sign In <i class="ph-bold ph-arrow-right"></i></a>
+    </nav>
+
+    <!-- HERO SECTION -->
+    <section id="home" class="hero">
+        <div class="hero-content">
+            <div class="badge"><i class="ph-fill ph-lightning"></i> v2.0 Live Now</div>
+            <h1>Supercharge Your <br> <span>Internal Tools</span></h1>
+            <p>The ultimate admin dashboard solution built for speed, security, and scalability. Streamline your
+                operational workflows and visualize data seamlessly today.</p>
+            <div class="hero-btns">
+                <a href="#features" class="btn btn-primary">Get Started</a>
+                <a href="#how-it-works" class="btn btn-outline">Learn More</a>
+            </div>
+        </div>
+
+        <div class="hero-visual">
+            <div class="mockup-container">
+                <div class="mock-header">
+                    <div class="mock-dot red"></div>
+                    <div class="mock-dot yellow"></div>
+                    <div class="mock-dot green"></div>
+                </div>
+                <div class="mock-body">
+                    <div class="mock-sidebar">
+                        <div class="mock-sidebar-icon active"></div>
+                        <div class="mock-sidebar-icon"></div>
+                        <div class="mock-sidebar-icon"></div>
+                        <div class="mock-sidebar-icon"></div>
+                    </div>
+                    <div class="mock-content">
+                        <div class="mock-cards">
+                            <div class="mock-card">
+                                <div class="mc-title"></div>
+                                <div class="mc-val"></div>
+                            </div>
+                            <div class="mock-card">
+                                <div class="mc-title"></div>
+                                <div class="mc-val"></div>
+                            </div>
+                            <div class="mock-card">
+                                <div class="mc-title"></div>
+                                <div class="mc-val"></div>
+                            </div>
+                        </div>
+                        <div class="mock-chart">
+                            <div class="mock-bar"></div>
+                            <div class="mock-bar"></div>
+                            <div class="mock-bar"></div>
+                            <div class="mock-bar"></div>
+                            <div class="mock-bar"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- KEY FEATURES / SOLUTIONS -->
+    <section id="features">
+        <div class="section-header">
+            <h2 class="section-title">Key Features</h2>
+            <p class="section-subtitle">Everything you need to build powerful, data-driven administrative interfaces in
+                record time.</p>
+        </div>
+        <div class="features-grid">
+            <div class="feature-card f-blue">
+                <div class="f-icon"><i class="ph-fill ph-chart-line-up"></i></div>
+                <h3>Real-time Analytics</h3>
+                <p>Visualize your critical data with stunning, interactive charts that update in real-time without page
+                    refreshes.</p>
+            </div>
+            <div class="feature-card f-green">
+                <div class="f-icon"><i class="ph-fill ph-users-three"></i></div>
+                <h3>User Management</h3>
+                <p>Advanced role-based access control and detailed user logs to manage your team securely and
+                    efficiently.</p>
+            </div>
+            <div class="feature-card f-orange">
+                <div class="f-icon"><i class="ph-fill ph-shield-check"></i></div>
+                <h3>Enterprise Security</h3>
+                <p>Built-in security protocols, data encryption, and regular audits to ensure your internal tools are
+                    impenetrable.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- HOW IT WORKS -->
+    <section id="how-it-works">
+        <div class="section-header">
+            <h2 class="section-title">How It Works</h2>
+            <p class="section-subtitle">Deploying a professional dashboard has never been this straightforward.</p>
+        </div>
+        <div class="steps-wrapper">
+            <div class="step-col">
+                <div class="step-number">1</div>
+                <h3>Connect Database</h3>
+                <p>Seamlessly integrate with PostgreSQL, MySQL, or Firebase using our secure APIs.</p>
+            </div>
+            <div class="step-col">
+                <div class="step-number">2</div>
+                <h3>Configure UI</h3>
+                <p>Select your components and customize the layout with our drag-and-drop builder.</p>
+            </div>
+            <div class="step-col">
+                <div class="step-number">3</div>
+                <h3>Deploy & Scale</h3>
+                <p>Push to production with a single click and watch your system scale automatically.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- SOCIAL PROOF & INTERACTIVE TOOL -->
+    <section id="social-proof">
+        <div class="proof-container">
+            <div class="testimonials">
+                <div class="section-header" style="text-align: left; margin-bottom: 30px;">
+                    <h2 class="section-title" style="font-size: 2rem;">Loved by Teams</h2>
+                </div>
+
+                <div class="tweet-card">
+                    <i class="ph-fill ph-quotes"></i>
+                    <p class="tweet-text">"We cut our operational overhead by 40% after switching to Mofi. The UI is
+                        exceptionally intuitive and the charts are gorgeous."</p>
+                    <div class="tweet-author">
+                        <div class="tweet-avatar">S</div>
+                        <div class="author-info">
+                            <h4>Sarah Jenkins</h4>
+                            <span>CTO @ TechSphere</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tweet-card">
+                    <i class="ph-fill ph-quotes"></i>
+                    <p class="tweet-text">"The best admin template we have ever used. Highly customizable and saved us
+                        weeks of frontend development."</p>
+                    <div class="tweet-author">
+                        <div class="tweet-avatar a-pink">M</div>
+                        <div class="author-info">
+                            <h4>Mark Torres</h4>
+                            <span>Lead Developer</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="interactive-widget">
+                <div class="widget-header">
+                    <h3>Live Revenue Tracking</h3>
+                    <div class="badge"
+                        style="margin: 0; background: rgba(16,185,129,0.1); color: var(--accent-green); border-color: rgba(16,185,129,0.3);">
+                        +24.8% <i class="ph-bold ph-trend-up"></i>
+                    </div>
+                </div>
+                <div class="chart-svg-wrapper">
+                    <div class="chart-grid">
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                    </div>
+                    <svg class="svg-chart" viewBox="0 0 500 200" preserveAspectRatio="none"
+                        style="position: absolute; width: 100%; height: 100%; z-index: 1;">
+                        <!-- Gradient Fill -->
+                        <defs>
+                            <linearGradient id="gradient" x1="0" y1="0" x2="0" y2="1">
+                                <stop offset="0%" stop-color="rgba(59, 130, 246, 0.4)" />
+                                <stop offset="100%" stop-color="rgba(59, 130, 246, 0)" />
+                            </linearGradient>
+                        </defs>
+                        <path d="M0,200 L0,120 Q50,60 100,100 T200,80 T300,130 T400,50 T500,20 L500,200 Z"
+                            fill="url(#gradient)" />
+
+                        <!-- Smooth Line -->
+                        <path d="M0,120 Q50,60 100,100 T200,80 T300,130 T400,50 T500,20" fill="none"
+                            stroke="var(--accent-blue)" stroke-width="4" stroke-linecap="round"
+                            stroke-linejoin="round" />
+
+                        <!-- Data Points -->
+                        <circle cx="100" cy="100" r="5" fill="#fff" stroke="var(--accent-blue)" stroke-width="2" />
+                        <circle cx="200" cy="80" r="5" fill="#fff" stroke="var(--accent-blue)" stroke-width="2" />
+                        <circle cx="300" cy="130" r="5" fill="#fff" stroke="var(--accent-blue)" stroke-width="2" />
+                        <circle cx="400" cy="50" r="5" fill="#fff" stroke="var(--accent-blue)" stroke-width="2" />
+                    </svg>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- JOIN COMMUNITY -->
+    <section id="community">
+        <div class="cta-box">
+            <div class="cta-content">
+                <h2>Join Our Community</h2>
+                <p>Sign up today to get exclusive access to our newest components, administrative tips, and template
+                    updates sent straight to your inbox.</p>
+                <form class="signup-form" onsubmit="event.preventDefault();">
+                    <input type="text" placeholder="Full Name" required>
+                    <input type="email" placeholder="Email Address" required>
+                    <button type="submit" class="btn btn-primary">Sign Up Now</button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer>
+        <div class="footer-top">
+            <div class="logo">
+                <i class="ph-fill ph-circles-four"></i> Mofi.
+            </div>
+            <div class="footer-links">
+                <a href="#">About</a>
+                <a href="#">Resources</a>
+                <a href="#">Support</a>
+                <a href="#">Privacy</a>
+            </div>
+            <div class="footer-social">
+                <a href="#"><i class="ph-fill ph-facebook-logo"></i></a>
+                <a href="#"><i class="ph-fill ph-twitter-logo"></i></a>
+                <a href="#"><i class="ph-fill ph-github-logo"></i></a>
+                <a href="#"><i class="ph-fill ph-envelope-simple"></i></a>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            &copy; 2026 Mofi Dashboard Theme. All rights reserved. Premium UI by pixelstrap style.
+        </div>
+    </footer>
+
+</body>
+
+</html>
